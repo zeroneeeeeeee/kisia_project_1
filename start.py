@@ -17,7 +17,7 @@ from openpyxl import load_workbook
 
 docker_image_tag = "custom_ansible_image"
 
-current_directory = os.getcwd() # /home/ansibleuser/miniproject
+current_directory = os.getcwd()
 
 local_inventory_dir = f"{current_directory}/inventory.d/"
 local_private_key_dir = f"{current_directory}/privateKey.d/"
@@ -74,22 +74,15 @@ def create_inventory(max_num=1):
         for os_section in os_sections:
             hosts = subset[subset[excel_column[0]] == os_section]
 
-
-            #print(hosts)
-            #exit()
             if not hosts.empty:
                 config.add_section(os_section)
                 # index, row
                 for _, row in hosts.iterrows(): # row : pandas.core.series.series
-
-                    #print(row)
-                    #exit()
                     host_line = f"{row[excel_column[1]]} ansible_host={row[excel_column[1]]} ansible_port={row[excel_column[2]]} ansible_user={row[excel_column[3]]} " # ip, ssh_host ssh port, ssh username
                     if pd.notna(row[excel_column[4]]): # ssh password check
                         host_line += f"ansible_ssh_pass={row['ssh_password']} "
                     if pd.notna(row[excel_column[5]]): # ssh private key file name check
                         host_line += f"ansible_ssh_private_key_file={container_private_key_dir}{row[excel_column[5]]} "
-
                     if pd.notna(row[excel_column[6]]): # ssh sudo password check
                         host_line += f"ansible_become=true ansible_sudo_pass={row[excel_column[6]]}"
                     config.set(os_section, host_line)
@@ -132,7 +125,6 @@ WORKDIR /root/miniproject
         f.write(dockerfile_content)
     print(f'success docker file path : {local_dockerfile_path}')
 
-    #exit()
     print(f'create docker_image_tag : {docker_image_tag}')
     image, _ = client.images.build(
         path='.', # 현재 경로 / 상대 경로
@@ -185,7 +177,6 @@ def run_container(image_tag, num_containers=2):
                 #auto_remove=False
             )
 
-            #exit()
             print(f"Running container ID {container.short_id}")
 
         time.sleep(5)
@@ -264,13 +255,11 @@ def Main():
     print(f'*** create ansible.cfg file ***')
     create_ansible_cfg()
 
-    #exit()
     print(f'*** create invintory files ***')
     create_inventory()
     for i in os.listdir(local_inventory_dir):
         print(f'create inventory file : {i}')
 
-    #exit()
     print(f'*** check docker image : {docker_image_tag} ***')
     if check_custom_docker_image(docker_image_tag):
         print(f'found docker iamge : {docker_image_tag}')
@@ -278,14 +267,12 @@ def Main():
         print(f'not found. docker image.')
         create_custom_docker_image(docker_image_tag)
 
-    #exit()
     print(f'*** run containers ansible ***')
     run_container(docker_image_tag)
     
     for i in os.listdir(local_result_json_dir):
         print(f'create json file : {i}')
 
-    #exit()
     one_json_to_one_excel(load_json_files())
 
     for i in os.listdir(local_result_excel_dir):
