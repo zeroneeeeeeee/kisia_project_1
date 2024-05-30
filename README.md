@@ -16,10 +16,10 @@ kisia project
 - 도구 만드는 것은 중요하지 않음. (멘토님)
 
 역할
-- 이영원 : 배포 서버 구축 및 도구 개발
-- 장한나 : CCE shell script 개발 (u-
-- 이현석 : CCE shell script 개발 
-- 임찬미 : CCE shell script 개발 (
+- 이영원 : 배포 서버 구축, 자동화 도구 개발 및 CCE shell script 개발 지원
+- 장한나 : CCE shell script 개발 (u-19 ~ u-36)
+- 이현석 : CCE shell script 개발 (u-37 ~ u-54)
+- 임찬미 : CCE shell script 개발 (u-55 ~ u-72)
 - 전호연 : CCE shell script 개발 (u-1 ~ u-18)
 
 기술 스택 사용 이유
