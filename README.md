@@ -17,10 +17,10 @@ kisia project
 
 역할
 - 이영원 : 배포 서버 구축 및 도구 개발
-- 장한나 : CCE shell script 개발
-- 이현석 : CCE shell script 개발
-- 임찬미 : CCE shell script 개발
-- 전호연 : CCE shell script 개발
+- 장한나 : CCE shell script 개발 (u-
+- 이현석 : CCE shell script 개발 
+- 임찬미 : CCE shell script 개발 (
+- 전호연 : CCE shell script 개발 (u-1 ~ u-18)
 
 기술 스택 사용 이유
 
