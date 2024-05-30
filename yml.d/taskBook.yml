@@ -1,0 +1,19 @@
+- name: Copy script files to remote hosts
+  ansible.builtin.copy:
+    src: "~/miniproject/script.d/U-{{ index_number }}.sh"
+    dest: "~/U-{{ index_number }}"
+    mode: "0600"
+
+- name: Execute the copied script files using bash
+  ansible.builtin.shell: "bash ~/U-{{ index_number }}"
+  register: output
+  ignore_errors: yes
+    
+- name: Remove the copied script files from remote hosts
+  ansible.builtin.file:
+    path: "~/U-{{ index_number }}"
+    state: absent
+
+- name: Update output JSON with script results
+  ansible.builtin.set_fact:
+    output_json: "{{output_json+[{'index': index_number, 'vuln': output.stdout_lines[0], 'stderr': output.stderr, 'stdout': output.stdout}]}}"

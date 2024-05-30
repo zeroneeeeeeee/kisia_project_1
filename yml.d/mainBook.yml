@@ -1,0 +1,27 @@
+---
+
+- name: Main Start
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Initialize Output JSON
+      ansible.builtin.set_fact:
+        output_json: []
+
+    - name: Extract OS Name
+      ansible.builtin.shell:
+        cmd: cat /etc/os-release | grep '^PRETTY_NAME' | awk -F '"' '{print $2}' | awk -F " " '{print $1}'
+      register: os_name
+        
+    - name: Execute Ubuntu Specific Tasks
+      ansible.builtin.include_tasks: taskBook.yml
+      loop: "{{ range(1, 5) | list }}"
+      loop_control:
+        loop_var: index_number
+      when: os_name.stdout == "Ubuntu"
+
+    - name: Save Output JSON to Local File
+      ansible.builtin.copy:
+        content: {"os_name": "{{os_name.stdout}}", "ip": "{{ ansible_host }}","result": "{{output_json}}"}
+        dest: "~/miniproject/result.d/{{ ansible_host }}_result"
+      delegate_to: localhost
