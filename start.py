@@ -39,7 +39,7 @@ container_playbook_path = "/root/miniproject/mainBook.yml"
 client = docker.from_env()
 
 
-def create_ansible_cfg(forks=1):
+def create_ansible_cfg(forks=5):
     config = cp.ConfigParser(allow_no_value=True) # 섹션 밑에 옵션 없어도 허용
     config.add_section('defaults')
 
@@ -53,7 +53,7 @@ def create_ansible_cfg(forks=1):
     print(f'create ansible.cfg file path : {local_ansible_cfg_path}')
 
 
-def create_inventory(max_num=1):
+def create_inventory(max_num=5):
     excel_column = ['os_name', 'ip', 'ssh_port', 'ssh_user_name', 'ssh_password', 'ssh_private_key_file_name','ssh_sudo_password']
 
     pd_data = pd.read_excel(local_excel_file_path) # type pandas.core.frame.dataFrame
