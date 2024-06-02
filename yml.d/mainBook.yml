@@ -15,7 +15,7 @@
         
     - name: Execute Ubuntu Specific Tasks
       ansible.builtin.include_tasks: taskBook.yml
-      loop: "{{ range(1, 5) | list }}"
+      loop: "{{ range(1, 73) | list }}"
       loop_control:
         loop_var: index_number
       when: os_name.stdout == "Ubuntu"
