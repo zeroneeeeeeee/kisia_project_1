@@ -167,14 +167,10 @@ def run_container(image_tag, num_containers=2):
 
             container = client.containers.run(
                 image_tag,
-                #command=f"/bin/bash",
                 command=f"ansible-playbook mainBook.yml -i ./inventory.d/{inv_file}",
                 detach=True, # background
-                #stdin_open=True,
-                #tty=True,
                 volumes=volumes,
                 auto_remove=True
-                #auto_remove=False
             )
 
             print(f"Running container ID {container.short_id}")
