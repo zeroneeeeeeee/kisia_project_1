@@ -1,15 +1,9 @@
-kisia project
-
+# kisia project
 주제 : 리눅스 CCE 스크립트 개발 및 자동 배포 도구 개발
-
 기간 : 2024.03 ~ 2024.05
-
 멘토님 : 토스 이종호 리더님
-
 멘토원 : 이영원, 장한나, 이현석, 임찬미, 전호연
-
 사용 기술 스택 : python, shell script, docker, ansible
-
 
 방향성 / 취지 : 서버 취약점 진단 시 많은 서버를 관리 및 진단하기 위해선 자동화가 필수 입니다. 
 현업에서 많은 서버를 관리하기 위한 방법 및 절차, 프로세스를 고민해보았습니다.
@@ -31,20 +25,27 @@ kisia project
 기술 스택 사용 이유
 - python : 자동화를 위한 일련의 과정이 python 스크립트를 통해 가능하며, 가장 자신있는 언어이기에 선택했습니다.
 - shell script : 서버 취약점 진단 시 최대한 많은 호환 및 적용 범위를 위해 shell script를 사용했습니다.
-- docker : 프로젝트 시 운영 서버 배포 및 재사용에 용이하며 추후 쿠버네티스 활용을 위해 사용했습니다.
-- ansible : 현업에서 많이 사용하는 도구중 agentless로 동작하기에 사용했습니다.
+- docker : 프로젝트 시 운영 서버 배포 및 재사용(생성, 수정, 삭제)에 용이하며 추후 쿠버네티스 활용을 위해 사용했습니다.
+- ansible : 현업에서 많이 사용하는 도구중 하나이며 agentless로 동작하고, 관리 서버의 오버헤드가 적고, 코드로 인프라 관리(IaC)가 가능하기에 선택했습니다.
 
 시나리오
 - server_info.xlsx 파일에 서버 버전(ubuntu, centos), ssh user id, ssh password, ssh port, ssh private key file name, ssh sudo password란 내용을 입력해줍니다.
 - ssh version, ssh user id, ssh port, ssh sudo password는 필수 입력 값 입니다.
 - ssh password나 개인키 로그인 시 개인키 파일 이름을 엑셀에 적고 추후 운영서버 특정 디렉터리(private.d)에 ssh key를 넣어줍니다.
-- server_info.xlsx의 입력 값이 문제 없고 개인키 지정 시 개인키가 특정 디렉터리(private.d)에 존재해야 하며, python start.py 실행 시 server_info.xlsx 파일을 읽고 ansible inventory book 생성 및 컨테이너에 바인드 마운트 하여 컨테이너 내부에서 inventory book이 전달됩니다.
-- server_info.xlsx에 서버정보가 100개가 있다면 inventory book은 20개씩 생성되며 1개당 5개의 서버 정보가 존재합니다.
-- 컨테이너 내부 ansible 실행 후 서버 하나당 json 파일이 하나 생성이 되며 해당 파일은 파싱을 통해 xlsx 파일로 변환됩니다.
-- inventory book이 20개면 컨테이너는 20개씩 생성 및 삭제가 되며, 현재는 python container list을 통해 container object가 2개일 경우 더이상 생성하지 않도록 되어있습니다.
-
-힘든점
+- server_info.xlsx의 입력 값이 문제 없고 개인키 지정 시 개인키가 특정 디렉터리(privateKey.d)에 존재해야 하며, python start.py 실행 시 server_info.xlsx 파일을 읽고 ansible inventory book 생성 및 컨테이너에 바인드 마운트 하여 컨테이너 내부에서 inventory book이 전달됩니다.
+- server_info.xlsx에 서버정보가 n개가 있다면 inventory book은 k개가 생성되며 k개당 5개의 서버 정보가 존재합니다. (n/5 = k)
+- 컨테이너 내부 ansible 실행 후 서버 하나당 json 파일이 하나 생성이 되며 해당 파일은 파싱 및 미리 정의된 excel tamplet을 통해 xlsx 파일로 변환됩니다.
+- inventory book이 k개면 컨테이너는 k개씩 생성 및 삭제가 되며, 코드상 container object 갯수를 정해놓고 (2개) python container list을 통해 container object가 2개일 경우 더이상 생성하지 않도록 되어있습니다.
 
 아쉬운점
+- dockerfile build시 ansible 필요 패키지만 설치하여 가볍게 이미지를 만들지 못한 점
+- ubuntu용 shell script 작성에 시간이 많이 소요되어 centos shell script를 작성하지 못한 점
+- shell script의 내용이 관리 서버(maneged node)에서 실행 및 결과가 나오게끔 작성이 되어있기에 자원 점유율이 많아 실제 서비스 서버에 작동 시 에로가 발생할 가능성이 있음. 이를 더 적고 효율적으로 할 수 잇는 방안이 존재하나 여러 이슈로 인해 그러지 못한 점
+- 쿠버네티스를 활용하여 노드를 클러스터링 하여 작동하게끔 만듬으로써 확장성 및 가용성을 높이지 못한 점
+- 컨테이너가 삭제되고 다시 생성되게 구현을 해놓았으나 비효율적이기 때문에 다른 방법으로 적용하지 못한 점
+- 일부 팀원들의 열의가 낮았던 점..
 
 느낀점 / 마무리
+- 현업에서 충분히 고민해볼만한 사항을 프로젝트로 진행하였기에 흥미가 더욱 생겼고 개인적으로 재밌게 프로젝트를 진행했습니다.
+- 좋은 멘토님을 통해서 짧은 시간이였지만 재밌는 프로젝트를 할 수 있어 좋았습니다.
+- 일부 팀원들끼리 서로 마찰이 생겨 shell script 작성 시 소통 및 협업이 원할하지 못하여 프로젝트 진행률이 떨어져 아쉬웠습니다.
