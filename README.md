@@ -1,51 +1,63 @@
-# kisia project
-주제 : 리눅스 CCE 스크립트 개발 및 자동 배포 도구 개발
-기간 : 2024.03.25 ~ 2024.05.03 
-멘토님 : 토스 이종호 리더님
-멘토원 : 이영원, 장한나, 이현석, 임찬미, 전호연
-사용 기술 스택 : python, shell script, docker, ansible
+# KISIA Project 1
 
-방향성 / 취지 : 주요정보통신기반시설 체크리스트 항목에 따른 서버 취약점 진단 시 많은 서버를 관리 및 진단하기 위해선 자동화가 필수 입니다. 
+## 주제
+**리눅스 CCE 스크립트 개발 및 자동 배포 도구 개발**
+
+## 기간
+**2024.03.25 ~ 2024.05.03**
+
+## 멘토님
+**토스 이종호 리더님**
+
+## 멘토원
+**이영원, 전호연, 장한나, 이현석, 임찬미**
+
+## 사용 기술 스택
+**Python, Shell Script, Docker, Ansible**
+
+## 프로젝트 방향 및 취지
+주요 정보통신기반시설 체크리스트 항목에 따른 서버 취약점 진단 시 많은 서버를 관리하고 진단하기 위해 자동화가 필수적입니다. 
 현업에서 많은 서버를 관리하기 위한 방법 및 절차, 프로세스를 고민해보았습니다.
-에스에스알의 SolidStep 제품을 모티브 삼아 online상 agentless 형식의 일관성있고 자동화된 배포 도구를 개발하기로 하였습니다.
-특정 상황을 가정하여 시나리오를 구상하고 이에 따른 자동화 배포를 계획하였습니다.
+에스에스알의 SolidStep 제품을 모티브로 삼아 온라인 상에서 agentless 형식의 일관성 있고 자동화된 배포 도구를 개발하기로 했습니다.
+특정 상황을 가정하여 시나리오를 구상하고 이에 따른 자동화 배포를 계획했습니다.
 
-멘토님 요구사항
-- LLM(Chat Gpt)을 많이 활용해 볼것
+## 멘토님 요구사항
+- LLM(ChatGPT)을 많이 활용해 볼 것
 - 프로젝트 작업의 과정과 시나리오에 대한 이해
-- 도구 만드는 것은 중요하지 않음
+- 도구를 만드는 것보다 과정을 이해하는 것이 중요함
 
-역할
-- 이영원 : 배포 서버 구축, 자동화 도구 개발 및 CCE shell script 개발 지원
-- 장한나 : CCE shell script 개발 (u-19 ~ u-36)
-- 이현석 : CCE shell script 개발 (u-37 ~ u-54)
-- 임찬미 : CCE shell script 개발 (u-55 ~ u-72)
-- 전호연 : CCE shell script 개발 (u-1 ~ u-18)
+## 역할 분담
+- **이영원:** 배포 서버 구축, 자동화 도구 개발 및 CCE Shell Script 개발 지원
+- **전호연:** CCE Shell Script 개발 (u-1 ~ u-18)
+- **장한나:** CCE Shell Script 개발 (u-19 ~ u-36)
+- **이현석:** CCE Shell Script 개발 (u-37 ~ u-54)
+- **임찬미:** CCE Shell Script 개발 (u-55 ~ u-72)
 
-기술 스택 사용 이유
-- python : 자동화를 위한 일련의 과정이 python 스크립트를 통해 가능하며, 가장 자신있는 언어이기에 선택했습니다.
-- shell script : 서버 취약점 진단 시 최대한 많은 호환 및 적용 범위를 위해 shell script를 사용했습니다.
-- docker : 프로젝트 시 운영 서버 배포 및 재사용(생성, 수정, 삭제)에 용이하며 추후 쿠버네티스 활용을 위해 사용했습니다.
-- ansible : 현업에서 많이 사용하는 도구중 하나이며 agentless로 동작하고, 관리 서버의 오버헤드가 적고, 코드로 인프라 관리(IaC)가 가능하기에 선택했습니다.
+## 기술 스택 사용 이유
+- **Python:** 자동화를 위한 일련의 과정이 Python 스크립트를 통해 가능하며, 가장 자신 있는 언어이기 때문에 선택했습니다.
+- **Shell Script:** 서버 취약점 진단 시 최대한 많은 호환 및 적용 범위를 위해 사용했습니다.
+- **Docker:** 운영 서버 배포 및 재사용(생성, 수정, 삭제)에 용이하며 추후 쿠버네티스 활용을 위해 사용했습니다.
+- **Ansible:** 현업에서 많이 사용하는 도구 중 하나이며 agentless로 동작하고, 관리 서버의 오버헤드가 적으며, 코드로 인프라 관리(IaC)가 가능하기에 선택했습니다.
 
-시나리오
-- server_info.xlsx 파일에 서버 버전(ubuntu, centos), ssh user id, ssh password, ssh port, ssh private key file name, ssh sudo password란 내용을 입력해줍니다.
-- ssh version, ssh user id, ssh port, ssh sudo password는 필수 입력 값 입니다.
-- ssh password나 개인키 로그인 시 개인키 파일 이름을 엑셀에 적고 추후 운영서버 특정 디렉터리(private.d)에 ssh key를 넣어줍니다.
-- server_info.xlsx의 입력 값이 문제 없고 개인키 지정 시 개인키가 특정 디렉터리(privateKey.d)에 존재해야 하며, python start.py 실행 시 server_info.xlsx 파일을 읽고 ansible inventory book 생성 및 컨테이너에 바인드 마운트 하여 컨테이너 내부에서 inventory book이 전달됩니다.
-- server_info.xlsx에 서버정보가 n개가 있다면 inventory book은 k개가 생성되며 k개당 5개의 서버 정보가 존재합니다. (n/5 = k)
-- 컨테이너 내부 ansible 실행 후 서버 하나당 json 파일이 하나 생성이 되며 해당 파일은 파싱 및 미리 정의된 excel tamplet을 통해 xlsx 파일로 변환됩니다.
-- inventory book이 k개면 컨테이너는 k개씩 생성 및 삭제가 되며, 코드상 container object 갯수를 정해놓고 (2개) python container list을 통해 container object가 2개일 경우 더이상 생성하지 않도록 되어있습니다.
+## 시나리오
+1. **server_info.xlsx** 파일에 서버 OS 종류(ubuntu, centos), SSH user ID, SSH password, SSH port, SSH private key file name, SSH sudo password를 입력합니다.
+2. SSH user ID, SSH port, SSH sudo password는 필수 입력 값입니다.
+3. SSH password나 개인키를 사용할 경우 개인키 파일 이름을 엑셀에 적고, 운영 서버의 특정 디렉터리(privateKey.d)에 SSH key를 넣어줍니다.
+4. **server_info.xlsx**의 입력 값이 문제 없고 개인키를 지정한 경우, 개인키가 특정 디렉터리(privateKey.d)에 존재해야 합니다. Python **start.py** 실행 시 server_info.xlsx 파일을 읽고 Ansible inventory book을 생성합니다.
+5. inventory book은 컨테이너에 바인드 마운트 되어 컨테이너 내부에서 사용됩니다.
+6. server_info.xlsx에 서버 정보가 n개가 있다면 inventory book은 k개가 생성되며, 각 book당 최대 5개의 서버 정보가 포함됩니다 (n/5 = k).
+7. 컨테이너 내부에서 Ansible을 실행한 후, 각 서버마다 JSON 파일이 생성되며, 해당 파일은 파싱 및 미리 정의된 Excel 템플릿을 통해 xlsx 파일로 변환됩니다.
+8. inventory book이 k개면 컨테이너는 k개씩 생성 및 삭제되며, 코드에서 컨테이너 객체의 갯수를 2개로 제한하여 관리합니다.
 
-아쉬운점
-- dockerfile build시 ansible 필요 패키지만 설치하여 가볍게 이미지를 만들지 못한 점
-- ubuntu용 shell script 작성에 시간이 많이 소요되어 centos shell script를 작성하지 못한 점
-- shell script의 내용이 관리 서버(maneged node)에서 실행 및 결과가 나오게끔 작성이 되어있기에 자원 점유율이 많아 실제 서비스 서버에 작동 시 에로가 발생할 가능성이 있음. 이를 더 적고 효율적으로 할 수 잇는 방안이 존재하나 여러 이슈로 인해 그러지 못한 점
-- 쿠버네티스를 활용하여 노드를 클러스터링 하여 작동하게끔 만듬으로써 확장성 및 가용성을 높이지 못한 점
-- 컨테이너가 삭제되고 다시 생성되게 구현을 해놓았으나 비효율적이기 때문에 다른 방법으로 적용하지 못한 점
-- 일부 팀원들의 열의가 낮았던 점..
+## 아쉬운 점
+- Dockerfile 빌드 시 Ansible에 필요한 패키지만 설치하여 가볍게 이미지를 만들지 못한 점.
+- Ubuntu용 Shell Script 작성에 시간이 많이 소요되어 CentOS용 Shell Script를 작성하지 못한 점.
+- Shell Script가 관리 서버(managed node)에서 실행 및 결과가 나오도록 작성되어 자원 점유율이 높아 실제 서비스 서버에서 작동 시 문제가 발생할 가능성이 있는 점.
+- 쿠버네티스를 활용하여 노드를 클러스터링하여 확장성 및 가용성을 높이지 못한 점.
+- 컨테이너가 삭제되고 다시 생성되게 구현한 방식이 비효율적이었던 점.
+- 일부 팀원들의 열의가 낮았던 점.
 
-느낀점 / 마무리
-- 현업에서 충분히 고민해볼만한 사항을 프로젝트로 진행하였기에 흥미가 더욱 생겼고 개인적으로 재밌게 프로젝트를 진행했습니다.
-- 좋은 멘토님을 통해서 짧은 시간이였지만 재밌는 프로젝트를 할 수 있어 좋았습니다.
-- 일부 팀원들끼리 서로 마찰이 생겨 shell script 작성 시 소통 및 협업이 원할하지 못하여 프로젝트 진행률이 떨어져 아쉬웠습니다.
+## 느낀 점 / 마무리
+- 현업에서 충분히 고민해볼 만한 사항을 프로젝트로 진행했기에 흥미가 생겼고, 개인적으로 재밌게 프로젝트를 진행했습니다.
+- 좋은 멘토님 덕분에 짧은 시간 동안 재밌는 프로젝트를 할 수 있어 좋았습니다.
+- 일부 팀원들 간의 마찰로 인해 Shell Script 작성 시 소통 및 협업이 원활하지 않아 프로젝트 진행률이 떨어져 아쉬웠습니다.
